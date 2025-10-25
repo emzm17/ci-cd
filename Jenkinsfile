@@ -1,14 +1,18 @@
 pipeline {
-    agent any
+    agent {
+        kubernetes {
+            label 'k8s-agent'  // Label of your pre-configured pod template
+        }
+    }
 
     environment {
-        REGISTRY = 'localhost:5000'
-        IMAGE_NAME = 'simple-k8s-app'
-        IMAGE_TAG = "${env.BUILD_NUMBER}"
-        DOCKER_USERNAME = credentials('docker').username
-        DOCKER_PASSWORD = credentials('docker').password
-        HELM_CHART_DIR = 'helm/simple-application'
-    }
+    REGISTRY = credentials('docker-registry')       // secret registry URL
+    IMAGE_NAME = 'simple-application'
+    IMAGE_TAG = "${env.BUILD_NUMBER}"
+    DOCKER_USERNAME = credentials('docker').username
+    DOCKER_PASSWORD = credentials('docker').password
+    HELM_CHART_DIR = 'helm/simple-application'
+   }
 
     stages {
 
