@@ -6,31 +6,34 @@ pipeline {
     }
 
     environment {
-    // REGISTRY = credentials('docker-registry')       // secret registry URL
-    IMAGE_NAME = 'simple-application'
-    IMAGE_TAG = "${env.BUILD_NUMBER}"
-    // DOCKER_USERNAME = credentials('docker').username
-    // DOCKER_PASSWORD = credentials('docker').password
-    HELM_CHART_DIR = 'helm/simple-application'
-   }
+        IMAGE_NAME = 'simple-application'
+        IMAGE_TAG = "${env.BUILD_NUMBER}"
+        HELM_CHART_DIR = 'helm/simple-application'
+    }
 
     stages {
 
-     stage('Docker Login') {
+        stage('Docker Login, Build and Push') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'docker', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS'),
-                string(credentialsId: 'docker-registry', variable: 'REGISTRY')]) {
-                    sh """
-                        echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin $REGISTRY
-                    """
-                }
-            }
-
-        stage('Build and Push Docker Image') {
-            steps {
-                script {
-                    def imageFullName = "${REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG}"
-                    docker.build(imageFullName).push()
+                withCredentials([
+                    usernamePassword(
+                        credentialsId: 'docker', 
+                        usernameVariable: 'DOCKER_USER', 
+                        passwordVariable: 'DOCKER_PASS'
+                    ),
+                    string(
+                        credentialsId: 'docker-registry', 
+                        variable: 'REGISTRY'
+                    )
+                ]) {
+                    script {
+                        // Docker login
+                        sh "echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin $REGISTRY"
+                        
+                        // Build and push image
+                        def imageFullName = "${REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG}"
+                        docker.build(imageFullName).push()
+                    }
                 }
             }
         }
@@ -38,7 +41,6 @@ pipeline {
         stage('Update Helm Chart Image Tag') {
             steps {
                 script {
-                    // Update values.yaml with new image tag
                     sh """
                         sed -i 's|^  repository:.*|  repository: ${REGISTRY}/${IMAGE_NAME}|' ${HELM_CHART_DIR}/values.yaml
                         sed -i 's|^  tag:.*|  tag: ${IMAGE_TAG}|' ${HELM_CHART_DIR}/values.yaml
@@ -68,8 +70,6 @@ pipeline {
         stage('Push Helm Chart (Optional)') {
             steps {
                 script {
-                    // Example: Push to local Helm repo
-                    // sh "helm repo index /path/to/helm-repo --merge /path/to/helm-repo/index.yaml"
                     echo "Helm chart packaged. Push to repository as needed."
                 }
             }
@@ -78,7 +78,8 @@ pipeline {
 
     post {
         always {
-            sh 'docker logout'
+            // Logout from Docker safely
+            sh 'docker logout || true'
         }
     }
 }
