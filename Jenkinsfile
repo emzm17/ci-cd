@@ -6,23 +6,25 @@ pipeline {
     }
 
     environment {
-    REGISTRY = credentials('docker-registry')       // secret registry URL
+    // REGISTRY = credentials('docker-registry')       // secret registry URL
     IMAGE_NAME = 'simple-application'
     IMAGE_TAG = "${env.BUILD_NUMBER}"
-    DOCKER_USERNAME = credentials('docker').username
-    DOCKER_PASSWORD = credentials('docker').password
+    // DOCKER_USERNAME = credentials('docker').username
+    // DOCKER_PASSWORD = credentials('docker').password
     HELM_CHART_DIR = 'helm/simple-application'
    }
 
     stages {
 
-        stage('Login to Docker Registry') {
+     stage('Docker Login') {
             steps {
-                sh """
-                    echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin $REGISTRY
-                """
+                withCredentials([usernamePassword(credentialsId: 'docker', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS'),
+                string(credentialsId: 'docker-registry', variable: 'REGISTRY')]) {
+                    sh """
+                        echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin $REGISTRY
+                    """
+                }
             }
-        }
 
         stage('Build and Push Docker Image') {
             steps {
