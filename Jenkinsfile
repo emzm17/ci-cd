@@ -14,10 +14,12 @@ pipeline {
     stages {
 
         stage('Initialize'){
+       steps {
         script {
-            def dockerHome = tool 'mydocker'
+            def dockerHome = tool 'mydocker'  
             env.PATH = "${dockerHome}/bin:${env.PATH}"
-          }
+        }
+       }
         }
 
         stage('Docker Login, Build and Push') {
