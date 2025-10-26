@@ -13,6 +13,11 @@ pipeline {
 
     stages {
 
+        stage('Initialize'){
+        def dockerHome = tool 'mydocker'
+        env.PATH = "${dockerHome}/bin:${env.PATH}"
+        }
+
         stage('Docker Login, Build and Push') {
             steps {
                 withCredentials([
