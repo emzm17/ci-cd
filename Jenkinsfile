@@ -87,7 +87,7 @@ pipeline {
                     string(
                         credentialsId: 'nexus-url',
                         variable: 'NEXUS_URL'
-                    )
+                    ),
                     string (
                         credentialsId: 'helm-repo',
                         variable: 'HELM_REPO'
