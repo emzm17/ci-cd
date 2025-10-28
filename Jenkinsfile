@@ -58,8 +58,10 @@ pipeline {
         
         stage('Lint Helm Chart') {
             steps {
-                dir("${HELM_CHART_DIR}") {
-                    sh 'helm lint .'
+                container('helm') {
+                    dir("${HELM_CHART_DIR}") {
+                        sh 'helm lint .'
+                    }
                 }
             }
         }
