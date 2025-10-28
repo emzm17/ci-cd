@@ -5,7 +5,7 @@ pipeline {
         }
     }
     environment {
-        IMAGE_NAME = 'simple-application'
+        IMAGE_NAME = 'simple-app'
         IMAGE_TAG = "${env.BUILD_NUMBER}"
         HELM_CHART_DIR = 'helm/simple-application'
     }
@@ -26,7 +26,7 @@ pipeline {
                     ]) {
                         script {
                             // Docker login
-                            sh "docker login -u ${DOCKER_USER} -p ${DOCKER_PASS} ${REGISTRY}"
+                            sh "docker login -u ${DOCKER_USER} -p ${DOCKER_PASS}"
                             
                             // Build and push image
                             sh """
