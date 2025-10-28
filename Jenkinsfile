@@ -7,8 +7,8 @@ pipeline {
     environment {
         IMAGE_NAME = 'simple-app'
         IMAGE_TAG = "${env.BUILD_NUMBER}"
-        HELM_CHART_DIR = 'helm/simple-application'
-        HELM_CHART_NAME = 'simple-application'
+        HELM_CHART_DIR = 'helm/simple-app'
+        HELM_CHART_NAME = 'simple-app'
     }
     stages {
         stage('Docker Login, Build and Push') {
@@ -98,7 +98,7 @@ pipeline {
                     script {
                         sh """
                             curl -v -u ${NEXUS_USER}:${NEXUS_PASS} \
-                                --upload-file ${HELM_CHART_DIR}/${HELM_CHART_NAME}-${IMAGE_TAG}.tgz \
+                                --upload-file ${WORKSPACE}/${HELM_CHART_DIR}/${HELM_CHART_NAME}-${IMAGE_TAG}.tgz \ \
                                 ${NEXUS_URL}/repository/${HELM_REPO}/${HELM_CHART_NAME}-${IMAGE_TAG}.tgz
                         """
                     }
