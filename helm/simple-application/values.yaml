@@ -1,6 +1,6 @@
 # Default values for simple-k8s-app.
 image:
-  repository: localhost:5000/simple-k8s-app  # default, overridden in CI
+  repository: localhost:5000/simple-app  # default, overridden in CI
   tag: "1.0"                                 # default, overridden in CI
   pullPolicy: IfNotPresent
 
