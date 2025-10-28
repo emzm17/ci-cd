@@ -1,5 +1,5 @@
 apiVersion: v2
-name: simple-k8s-app
+name: simple-app
 description: A simple Kubernetes app Helm chart
 type: application
 version: 0.1.0
