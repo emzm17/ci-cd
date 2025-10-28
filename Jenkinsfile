@@ -26,10 +26,8 @@ pipeline {
                         )
                     ]) {
                         script {
-                            // Docker login
-                            sh "docker login -u ${DOCKER_USER} -p ${DOCKER_PASS} ${REGISTRY}"
+                            sh "docker login -u ${DOCKER_USER} -p ${DOCKER_PASS}"
                             
-                            // Build and push image
                             sh """
                                 docker build -t ${REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG} .
                                 docker push ${REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG}
