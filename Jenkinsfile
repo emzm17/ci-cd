@@ -38,39 +38,39 @@ pipeline {
                 }  
             }
         }
-        stage('Update Helm Chart Image Tag') {
-            steps {
-                script {
-                    sh """
-                        sed -i 's|^  repository:.*|  repository: ${REGISTRY}/${IMAGE_NAME}|' ${HELM_CHART_DIR}/values.yaml
-                        sed -i 's|^  tag:.*|  tag: ${IMAGE_TAG}|' ${HELM_CHART_DIR}/values.yaml
-                    """
-                }
-            }
-        }
-        stage('Lint Helm Chart') {
-            steps {
-                dir("${HELM_CHART_DIR}") {
-                    sh 'helm lint .'
-                }
-            }
-        }
-        stage('Package Helm Chart') {
-            steps {
-                dir("${HELM_CHART_DIR}") {
-                    sh """
-                        helm package . --version ${IMAGE_TAG} --app-version ${IMAGE_TAG}
-                    """
-                }
-            }
-        }
-        stage('Push Helm Chart (Optional)') {
-            steps {
-                script {
-                    echo "Helm chart packaged. Push to repository as needed."
-                }
-            }
-        }
+    //     stage('Update Helm Chart Image Tag') {
+    //         steps {
+    //             script {
+    //                 sh """
+    //                     sed -i 's|^  repository:.*|  repository: ${REGISTRY}/${IMAGE_NAME}|' ${HELM_CHART_DIR}/values.yaml
+    //                     sed -i 's|^  tag:.*|  tag: ${IMAGE_TAG}|' ${HELM_CHART_DIR}/values.yaml
+    //                 """
+    //             }
+    //         }
+    //     }
+    //     stage('Lint Helm Chart') {
+    //         steps {
+    //             dir("${HELM_CHART_DIR}") {
+    //                 sh 'helm lint .'
+    //             }
+    //         }
+    //     }
+    //     stage('Package Helm Chart') {
+    //         steps {
+    //             dir("${HELM_CHART_DIR}") {
+    //                 sh """
+    //                     helm package . --version ${IMAGE_TAG} --app-version ${IMAGE_TAG}
+    //                 """
+    //             }
+    //         }
+    //     }
+    //     stage('Push Helm Chart (Optional)') {
+    //         steps {
+    //             script {
+    //                 echo "Helm chart packaged. Push to repository as needed."
+    //             }
+    //         }
+    //     }
     }
     post {
         always {
