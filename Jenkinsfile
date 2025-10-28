@@ -116,8 +116,6 @@ pipeline {
         }
         success {
             echo "Pipeline completed successfully!"
-            echo "Docker Image: ${REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG}"
-            echo "Helm Chart uploaded to: ${NEXUS_URL}/repository/helm-charts/${HELM_CHART_NAME}-${IMAGE_TAG}.tgz"
         }
         failure {
             echo "Pipeline failed. Check logs for details."
