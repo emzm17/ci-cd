@@ -40,12 +40,19 @@ pipeline {
         }
         stage('Update Helm Chart Image Tag') {
             steps {
+                withCredentials([
+                        string(
+                            credentialsId: 'docker-registry', 
+                            variable: 'REGISTRY'
+                        )
+                    ]){
                 script {
                     sh """
                         sed -i 's|^  repository:.*|  repository: ${REGISTRY}/${IMAGE_NAME}|' ${HELM_CHART_DIR}/values.yaml
                         sed -i 's|^  tag:.*|  tag: ${IMAGE_TAG}|' ${HELM_CHART_DIR}/values.yaml
                     """
                 }
+                    }
             }
         }
     //     stage('Lint Helm Chart') {
