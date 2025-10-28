@@ -72,6 +72,7 @@ pipeline {
                     dir("${HELM_CHART_DIR}") {
                         sh """
                             helm package . --version ${IMAGE_TAG} --app-version ${IMAGE_TAG}
+                            ls -lart
                         """
                     }
                 }
@@ -98,7 +99,7 @@ pipeline {
                     script {
                         sh """
                             curl -v -u ${NEXUS_USER}:${NEXUS_PASS} \
-                                --upload-file ${WORKSPACE}/${HELM_CHART_DIR}/${HELM_CHART_NAME}-${IMAGE_TAG}.tgz \
+                                --upload-file ${HELM_CHART_DIR}/${HELM_CHART_NAME}-${IMAGE_TAG}.tgz \
                                 ${NEXUS_URL}/repository/${HELM_REPO}/${HELM_CHART_NAME}-${IMAGE_TAG}.tgz
                         """
                     }
