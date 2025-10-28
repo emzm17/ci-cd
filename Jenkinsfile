@@ -68,10 +68,12 @@ pipeline {
         
         stage('Package Helm Chart') {
             steps {
-                dir("${HELM_CHART_DIR}") {
-                    sh """
-                        helm package . --version ${IMAGE_TAG} --app-version ${IMAGE_TAG}
-                    """
+                    container('helm') {
+                    dir("${HELM_CHART_DIR}") {
+                        sh """
+                            helm package . --version ${IMAGE_TAG} --app-version ${IMAGE_TAG}
+                        """
+                    }
                 }
             }
         }
