@@ -37,11 +37,15 @@ pipeline {
                 }  
             }
         }
-        stage('SonarQube Analysis'){
-        def scannerHome = tool 'SonarScanner';
-        withSonarQubeEnv() {
-            sh "${scannerHome}/bin/sonar-scanner"
-        }
+        stage('SonarQube Analysis') {
+            steps {
+            script {
+                def scannerHome = tool 'SonarScanner'
+                withSonarQubeEnv('sonarqube') {  // name you configured in Jenkins
+                    sh "${scannerHome}/bin/sonar-scanner"
+                }
+            }
+            }
         }
         stage('Update Helm Chart Image Tag') {
             steps {
