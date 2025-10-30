@@ -9,6 +9,8 @@ pipeline {
         IMAGE_TAG = "${env.BUILD_NUMBER}"
         HELM_CHART_DIR = 'helm/simple-app'
         HELM_CHART_NAME = 'simple-app'
+        SONARQUBE_SERVER = 'MySonarQube'          // Name configured in Jenkins
+        SCANNER_HOME = tool 'SonarQubeScanner
     }
     stages {
         stage('Docker Login, Build and Push') {
@@ -39,12 +41,15 @@ pipeline {
         }
         stage('SonarQube Analysis') {
             steps {
-            script {
-                def scannerHome = tool 'SonarScanner'
-                withSonarQubeEnv('sonarqube') {  // name you configured in Jenkins
-                    sh "${scannerHome}/bin/sonar-scanner"
+                withSonarQubeEnv("${SONARQUBE_SERVER}") {
+                    sh """
+                        ${SCANNER_HOME}/bin/sonar-scanner \
+                        -Dsonar.projectKey=simple-app \
+                        -Dsonar.sources=app.js \
+                        -Dsonar.host.url=$SONAR_HOST_URL \
+                        -Dsonar.login=$SONAR_AUTH_TOKEN
+                    """
                 }
-            }
             }
         }
         stage('Update Helm Chart Image Tag') {
