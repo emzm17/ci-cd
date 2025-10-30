@@ -10,7 +10,7 @@ pipeline {
         HELM_CHART_DIR = 'helm/simple-app'
         HELM_CHART_NAME = 'simple-app'
         SONARQUBE_SERVER = 'MySonarQube'          // Name configured in Jenkins
-        SCANNER_HOME = tool 'SonarQubeScanner
+        SCANNER_HOME = tool 'SonarQubeScanner'
     }
     stages {
         stage('Docker Login, Build and Push') {
@@ -52,6 +52,17 @@ pipeline {
                 }
             }
         }
+        stage('Quality Gate') {
+            steps {
+                timeout(time: 1, unit: 'HOURS') {
+                    script {
+                        def qg = waitForQualityGate()
+                        if (qg.status != 'OK') {
+                            error "Pipeline failed due to quality gate failure: ${qg.status}"
+                        }
+                    }
+                }
+            }
         stage('Update Helm Chart Image Tag') {
             steps {
                 withCredentials([
