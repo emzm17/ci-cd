@@ -63,6 +63,7 @@ pipeline {
                     }
                 }
             }
+        }
         stage('Update Helm Chart Image Tag') {
             steps {
                 withCredentials([
