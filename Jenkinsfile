@@ -44,10 +44,9 @@ pipeline {
                 withSonarQubeEnv("${SONARQUBE_SERVER}") {
                     sh """
                         ${SCANNER_HOME}/bin/sonar-scanner \
-                        -Dsonar.projectKey=simple-app \
-                        -Dsonar.sources=app.js \
+                        -Dsonar.projectKey=simple-apps \
+                        -Dsonar.token=$SONAR_AUTH_TOKEN \
                         -Dsonar.host.url=$SONAR_HOST_URL \
-                        -Dsonar.login=$SONAR_AUTH_TOKEN
                     """
                 }
             }
