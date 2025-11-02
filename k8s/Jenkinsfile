@@ -97,7 +97,7 @@ pipeline {
 
     post {
         success {
-            echo All "microservices deployed successfully from Nexus!"
+            echo "Microservices deployed successfully from Nexus!"
         }
         failure {
             echo "Deployment failed."
