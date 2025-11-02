@@ -12,7 +12,7 @@ pipeline {
     environment {
         HELM_VERSION = "3.15.3"
         KUBECONFIG = credentials('kubeconfig-jenkins')
-        KUBE_CONTEXT = "my-cluster"
+        KUBE_CONTEXT = "kind-kind-multinode"
         NEXUS_URL = credentials('nexus-url')
         NEXUS_CRED = credentials('nexus-credentials') 
     }
