@@ -23,19 +23,19 @@ pipeline {
 
     stages {
 
-        stage('Setup Helm') {
-            steps {
-                sh '''
-                    if ! command -v helm >/dev/null 2>&1; then
-                        echo "Installing Helm ${HELM_VERSION}..."
-                        curl -fsSL https://get.helm.sh/helm-v${HELM_VERSION}-linux-amd64.tar.gz -o helm.tar.gz
-                        tar -zxvf helm.tar.gz
-                        sudo mv linux-amd64/helm /usr/local/bin/helm
-                    fi
-                    helm version
-                '''
-            }
-        }
+        // stage('Setup Helm') {
+        //     steps {
+        //         sh '''
+        //             if ! command -v helm >/dev/null 2>&1; then
+        //                 echo "Installing Helm ${HELM_VERSION}..."
+        //                 curl -fsSL https://get.helm.sh/helm-v${HELM_VERSION}-linux-amd64.tar.gz -o helm.tar.gz
+        //                 tar -zxvf helm.tar.gz
+        //                 sudo mv linux-amd64/helm /usr/local/bin/helm
+        //             fi
+        //             helm version
+        //         '''
+        //     }
+        // }
 
         stage('Add Nexus Helm Repo') {
             steps {
