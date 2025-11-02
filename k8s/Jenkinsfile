@@ -1,6 +1,10 @@
 pipeline {
 
-    agent any
+    agent {
+        kubernetes {
+            label 'k8s-agent'
+        }
+    }
 
     parameters {
         string(name: 'NAMESPACE', defaultValue: 'staging', description: 'Kubernetes namespace to deploy into')
