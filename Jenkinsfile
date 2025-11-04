@@ -109,6 +109,7 @@ pipeline {
         
         stage('Push Helm Chart to Nexus') {
             steps {
+                container('helm') {
                 withCredentials([
                     usernamePassword(
                         credentialsId: 'nexus-credentials',
@@ -136,6 +137,7 @@ pipeline {
                         """
                     }
                 }
+            }
             }
         }
     }
