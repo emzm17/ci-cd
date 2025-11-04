@@ -111,7 +111,6 @@ pipeline {
                                         --version ${chartVersion} \
                                         -f ${valuesFile} \
                                         --namespace ${namespace} \
-                                        --create-namespace \
                                         --atomic --timeout 10m \
                                         
                                 """
