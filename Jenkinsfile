@@ -96,9 +96,6 @@ pipeline {
                     container('helm') {
                     dir("${HELM_CHART_DIR}") {
                         sh """
-                            if ! helm plugin list | grep push; then
-                                helm plugin install https://github.com/chartmuseum/helm-push.git
-                            fi
                             helm package . --version ${IMAGE_TAG} --app-version ${IMAGE_TAG}
                             ls -lart
                         """
@@ -127,12 +124,11 @@ pipeline {
                 ]) {
                     script {
                         sh """
-                         helm repo add ${HELM_REPO} ${NEXUS_URL} --username ${NEXUS_USER} --password ${NEXUS_PASS}
-                         
-                         helm repo update
- 
-                         # Push chart
-                         helm push ${HELM_CHART_DIR}/${HELM_CHART_NAME}-${IMAGE_TAG}.tgz ${HELM_REPO}
+                        if ! helm plugin list | grep push; then
+                            helm plugin install https://github.com/chartmuseum/helm-push.git
+                        fi
+                        # Push chart
+                        helm push ${HELM_CHART_DIR}/${HELM_CHART_NAME}-${IMAGE_TAG}.tgz ${HELM_REPO}
 
                         """
                     }
