@@ -114,6 +114,7 @@ pipeline {
                                 echo "⚠️ Skipping ${svc}: No values.yaml found."
                             }
 
+                        }
                         echo "✅ ${svc} deployed successfully."
                     }
                 }
