@@ -39,6 +39,7 @@ pipeline {
 
         stage('Add Nexus Helm Repo') {
             steps {
+                container('helm') {
                   withCredentials([
                     usernamePassword(
                         credentialsId: 'nexus-credentials',
@@ -63,7 +64,7 @@ pipeline {
                     """
             }
         }
-        
+            }
         }
 
         stage('Deploy from Nexus') {
