@@ -112,6 +112,7 @@ pipeline {
                                         -f ${valuesFile} \
                                         --namespace ${namespace} \
                                         --atomic --timeout 10m \
+                                        --context ${KUBE_CONTEXT}
                                         
                                 """
                             } else {
