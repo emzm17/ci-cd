@@ -128,7 +128,7 @@ pipeline {
                             helm plugin install https://github.com/chartmuseum/helm-push.git
                         fi
                         # Push chart
-                        helm push ${HELM_CHART_DIR}/${HELM_CHART_NAME}-${IMAGE_TAG}.tgz ${NEXUS_URL} --username ${NEXUS_USER} --password ${NEXUS_PASS}
+                        helm push ${HELM_CHART_DIR}/${HELM_CHART_NAME}-${IMAGE_TAG}.tgz ${NEXUS_URL} --username ${NEXUS_USER} --password ${NEXUS_PASS} --insecure-skip-tls-verify
                         """
                     }
                 }
