@@ -69,6 +69,7 @@ pipeline {
 
         stage('Deploy from Nexus') {
             steps {
+                container('helm') {
                 script {
                     def baseDir = params.MICROSERVICES_DIR
                     def namespace = params.NAMESPACE
@@ -114,7 +115,8 @@ pipeline {
                         echo "✅ ${svc} deployed successfully."
                     }
                 }
-            }
+            
+                }
         }
     }
 
