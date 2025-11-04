@@ -113,7 +113,7 @@ pipeline {
                                         --namespace ${namespace} \
                                         --create-namespace \
                                         --atomic --timeout 10m \
-                                        // --kube-context ${KUBE_CONTEXT}
+                                        
                                 """
                             } else {
                                 echo "⚠️ Skipping ${svc}: No values.yaml found."
