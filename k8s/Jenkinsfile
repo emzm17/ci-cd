@@ -39,14 +39,31 @@ pipeline {
 
         stage('Add Nexus Helm Repo') {
             steps {
+                  withCredentials([
+                    usernamePassword(
+                        credentialsId: 'nexus-credentials',
+                        usernameVariable: 'NEXUS_USER',
+                        passwordVariable: 'NEXUS_PASS'
+                    ),
+                    string(
+                        credentialsId: 'nexus-url',
+                        variable: 'NEXUS_URL'
+                    ),
+                    string (
+                        credentialsId: 'helm-repo',
+                        variable: 'HELM_REPO'
+                    )
+                ]) {
                 sh '''
                     echo "Adding Nexus Helm repository..."
                     helm repo add my-nexus ${NEXUS_URL} \
-                        --username ${NEXUS_CRED_USR} --password ${NEXUS_CRED_PSW}
+                        --username ${NEXUS_USER} --password ${NEXUS_PASS}
                     helm repo update
-                    helm search repo my-nexus
+                    helm search repo ${HELM_REPO}
                 '''
             }
+        }
+        
         }
 
         stage('Deploy from Nexus') {
