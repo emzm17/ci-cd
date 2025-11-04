@@ -126,9 +126,12 @@ pipeline {
                 ]) {
                     script {
                         sh """
-                            curl -v -u ${NEXUS_USER}:${NEXUS_PASS} \
-                                --upload-file ${HELM_CHART_DIR}/${HELM_CHART_NAME}-${IMAGE_TAG}.tgz \
-                                ${NEXUS_URL}repository/${HELM_REPO}/${HELM_CHART_NAME}-${IMAGE_TAG}.tgz
+                         helm repo add ${HELM_REPO} ${NEXUS_URL} --username ${NEXUS_USER} --password ${NEXUS_PASS}
+                         
+                         helm repo update
+ 
+                         # Push chart
+                         helm push ${HELM_CHART_DIR}/${HELM_CHART_NAME}-${IMAGE_TAG}.tgz ${HELM_REPO}
 
                         """
                     }
