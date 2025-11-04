@@ -126,7 +126,7 @@ pipeline {
                         sh """
                         export HELM_EXPERIMENTAL_OCI=1
 
-                        helm registry login ${NEXUS_URL} --username ${NEXUS_USER} --password ${NEXUS_PASS} --insecure-skip-tls-verify
+                        helm registry login ${NEXUS_URL} -u ${NEXUS_USER} -p ${NEXUS_PASS} --insecure-skip-tls-verify
 
                         # Push chart to Nexus (HTTP works here)
                         helm push ${HELM_CHART_DIR}/${HELM_CHART_NAME}-${IMAGE_TAG}.tgz ${NEXUS_URL} --insecure-skip-tls-verify
