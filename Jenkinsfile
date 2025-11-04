@@ -128,7 +128,7 @@ pipeline {
 
                         
                         curl -u ${NEXUS_USER}:${NEXUS_PASS} -T ${HELM_CHART_DIR}/${HELM_CHART_NAME}-${IMAGE_TAG}.tgz  {$NEXUS_URL}/repository/${HELM_REPO}/
-                        curl -u ${NEXUS_USER}:${NEXUS_PASS} -T index.yaml {$NEXUS_URL}/repository/${HELM_REPO}/
+                        curl -u ${NEXUS_USER}:${NEXUS_PASS} -T index.yaml {$NEXUS_URL}/repository/${HELM_REPO}/index.yaml
 
                
                         
