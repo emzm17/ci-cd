@@ -76,7 +76,7 @@ pipeline {
                                 credentialsId: 'helm-repo',
                                 variable: 'HELM_REPO'
                             )
-                        ])
+                        ]){
                     script {
                         def baseDir = params.MICROSERVICES_DIR
                         def namespace = params.NAMESPACE
