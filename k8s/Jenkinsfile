@@ -69,63 +69,66 @@ pipeline {
 
         stage('Deploy from Nexus') {
             steps {
+                
                 container('helm') {
-                script {
-                    def baseDir = params.MICROSERVICES_DIR
-                    def namespace = params.NAMESPACE
-                    def chartName = params.CHART_NAME
-                    def chartVersion = params.CHART_VERSION
+                
+                    script {
+                        def baseDir = params.MICROSERVICES_DIR
+                        def namespace = params.NAMESPACE
+                        def chartName = params.CHART_NAME
+                        def chartVersion = params.CHART_VERSION
 
-                    def services = sh(script: "ls -1 ${baseDir}", returnStdout: true).trim().split("\n")
+                        def services = sh(script: "ls -1 ${baseDir}", returnStdout: true).trim().split("\n")
 
-                    for (svc in services) {
-                        echo "🚀 Deploying microservice: ${svc}"
+                        for (svc in services) {
+                            echo "🚀 Deploying microservice: ${svc}"
 
-                        def svcPath = "${baseDir}/${svc}"
-                        def valuesFile = "${svcPath}/app.yaml"
-                        def cmFile = "${svcPath}/configmap.yaml"
-                        def secretFile = "${svcPath}/secret.yaml"
+                            def svcPath = "${baseDir}/${svc}"
+                            def valuesFile = "${svcPath}/app.yaml"
+                            def cmFile = "${svcPath}/configmap.yaml"
+                            def secretFile = "${svcPath}/secret.yaml"
 
-                        // Apply ConfigMap if present
-                        if (fileExists(cmFile)) {
-                            sh "kubectl apply -f ${cmFile} -n ${namespace} --context ${KUBE_CONTEXT}"
-                        }
+                            // Apply ConfigMap if present
+                            if (fileExists(cmFile)) {
+                                sh "kubectl apply -f ${cmFile} -n ${namespace} --context ${KUBE_CONTEXT}"
+                            }
 
-                        // Apply Secret if present
-                        if (fileExists(secretFile)) {
-                            sh "kubectl apply -f ${secretFile} -n ${namespace} --context ${KUBE_CONTEXT}"
-                        }
+                            // Apply Secret if present
+                            if (fileExists(secretFile)) {
+                                sh "kubectl apply -f ${secretFile} -n ${namespace} --context ${KUBE_CONTEXT}"
+                            }
 
-                        // Deploy using Helm from Nexus
-                        if (fileExists(valuesFile)) {
-                            sh """
-                                echo "Deploying ${svc} with chart ${chartName}-${chartVersion}..."
-                                helm upgrade --install ${svc} my-nexus/${chartName} \
-                                    --version ${chartVersion} \
-                                    -f ${valuesFile} \
-                                    --namespace ${namespace} \
-                                    --create-namespace \
-                                    --atomic --timeout 10m \
-                                    --kube-context ${KUBE_CONTEXT}
-                            """
-                        } else {
-                            echo "⚠️ Skipping ${svc}: No values.yaml found."
-                        }
+                            // Deploy using Helm from Nexus
+                            if (fileExists(valuesFile)) {
+                                sh """
+                                    echo "Deploying ${svc} with chart ${chartName}-${chartVersion}..."
+                                    helm upgrade --install ${svc} my-nexus/${chartName} \
+                                        --version ${chartVersion} \
+                                        -f ${valuesFile} \
+                                        --namespace ${namespace} \
+                                        --create-namespace \
+                                        --atomic --timeout 10m \
+                                        --kube-context ${KUBE_CONTEXT}
+                                """
+                            } else {
+                                echo "⚠️ Skipping ${svc}: No values.yaml found."
+                            }
 
                         echo "✅ ${svc} deployed successfully."
                     }
                 }
             
-                }
+            }
         }
     }
 
-    post {
-        success {
-            echo "Microservices deployed successfully from Nexus!"
+    post{
+            success {
+                echo "Microservices deployed successfully from Nexus!"
+            }
+            failure {
+                echo "Deployment failed."
+            }
         }
-        failure {
-            echo "Deployment failed."
-        }
-    }
+
 }
