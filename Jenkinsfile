@@ -124,6 +124,7 @@ pipeline {
                 ]) {
                     script {
                         sh """
+                        export HELM_EXPERIMENTAL_OCI=1
                         if ! helm plugin list | grep push; then
                             helm plugin install https://github.com/chartmuseum/helm-push.git
                         fi
