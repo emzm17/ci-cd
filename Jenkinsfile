@@ -96,6 +96,9 @@ pipeline {
                     container('helm') {
                     dir("${HELM_CHART_DIR}") {
                         sh """
+                            if ! helm plugin list | grep push; then
+                                helm plugin install https://github.com/chartmuseum/helm-push.git
+                            fi
                             helm package . --version ${IMAGE_TAG} --app-version ${IMAGE_TAG}
                             ls -lart
                         """
