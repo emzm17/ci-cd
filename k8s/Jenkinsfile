@@ -56,11 +56,10 @@ pipeline {
                     )
                 ]) {
                     sh """
-                        echo "Adding Nexus Helm repository..."
-                        helm repo add ${HELM_REPO} ${NEXUS_URL} \
-                            --username ${NEXUS_USER} --password ${NEXUS_PASS}
-                        helm repo update
-                        helm search repo ${HELM_REPO}
+                    helm repo add ${CHART_NAME} ${NEXUS_URL} \
+                    --username ${NEXUS_USER} --password ${NEXUS_PASS}
+                    helm repo update
+                    helm search repo ${HELM_REPO}
                     """
             }
         }
