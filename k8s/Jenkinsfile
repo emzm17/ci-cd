@@ -56,7 +56,7 @@ pipeline {
                     )
                 ]) {
                     sh """
-                    helm repo add ${CHART_NAME} http://${NEXUS_URL} \
+                    helm repo add ${CHART_NAME} http://${NEXUS_URL}/repository/${HELM_REPO}/ \
                     --username ${NEXUS_USER} --password ${NEXUS_PASS}
                     helm repo update
                     helm search repo ${HELM_REPO}
