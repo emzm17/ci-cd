@@ -60,6 +60,7 @@ pipeline {
                     --username ${NEXUS_USER} --password ${NEXUS_PASS}
                     helm repo update
                     helm search repo ${HELM_REPO}
+                    ls -lart
                     """
             }
         }
