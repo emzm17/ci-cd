@@ -124,7 +124,7 @@ pipeline {
                 ]) {
                     script {
                         sh """
-                        helm repo index . --url {$NEXUS_URL}/repository/${HELM_REPO}/
+                        helm repo index . --url {$NEXUS_URL}/repository/${HELM_REPO}/ --merge index.yaml
 
                         
                         curl -u ${NEXUS_USER}:${NEXUS_PASS} -T ${HELM_CHART_DIR}/${HELM_CHART_NAME}-${IMAGE_TAG}.tgz  {$NEXUS_URL}/repository/${HELM_REPO}/
