@@ -124,12 +124,13 @@ pipeline {
                 ]) {
                     script {
                         sh """
-                        export HELM_EXPERIMENTAL_OCI=1
+                        helm repo index . --url {$NEXUS_URL}/repository/${HELM_REPO}/
 
-                        helm registry login ${NEXUS_URL} -u ${NEXUS_USER} -p ${NEXUS_PASS} --insecure
+                        
+                        curl -u ${NEXUS_USER}:${NEXUS_PASS} -T ${HELM_CHART_DIR}/${HELM_CHART_NAME}-${IMAGE_TAG}.tgz  {$NEXUS_URL}/repository/${HELM_REPO}/
+                        curl -u ${NEXUS_USER}:${NEXUS_PASS} -T index.yaml {$NEXUS_URL}/repository/${HELM_REPO}/
 
-                        # Push chart to Nexus (HTTP works here)
-                        helm push ${HELM_CHART_DIR}/${HELM_CHART_NAME}-${IMAGE_TAG}.tgz ${NEXUS_URL} --insecure-skip-tls-verify
+               
                         
                         """
                     }
