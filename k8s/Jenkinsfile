@@ -107,7 +107,7 @@ pipeline {
                             if (fileExists(valuesFile)) {
                                 sh """
                                     echo "Deploying ${svc} with chart ${chartName}-${chartVersion}..."
-                                    helm upgrade --install ${HELM_REPO}/${chartName} \
+                                    helm upgrade --install ${chartName} ${HELM_REPO}/${chartName} \
                                         --version ${chartVersion} \
                                         -f ${valuesFile} \
                                         --namespace ${namespace} \
