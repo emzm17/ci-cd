@@ -8,7 +8,7 @@ pipeline {
 
     parameters {
         string(name: 'NAMESPACE', defaultValue: 'staging', description: 'Kubernetes namespace to deploy into')
-        string(name: 'MICROSERVICES_DIR', defaultValue: '/app/k8s/', description: 'Folder containing microservices')
+        string(name: 'MICROSERVICES_DIR', defaultValue: 'k8s', description: 'Folder containing microservices')
         string(name: 'CHART_NAME', defaultValue: 'simple-app', description: 'Helm chart name stored in Nexus')
         string(name: 'CHART_VERSION', defaultValue: '83', description: 'Helm chart version to deploy')
     }
