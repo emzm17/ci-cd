@@ -33,29 +33,30 @@ pipeline {
         }
 
         stage('Code Analysis and Helm Lint') {
-        parallel {
-            'SonarQube Analysis': {
-                steps {
-                    withSonarQubeEnv("${SONARQUBE_SERVER}") {
-                        sh """
-                        ${SCANNER_HOME}/bin/sonar-scanner \
-                        -Dsonar.projectKey=simple-apps \
-                        -Dsonar.token=$SONAR_AUTH_TOKEN \
-                        -Dsonar.host.url=$SONAR_HOST_URL
-                        """
+            parallel {
+                stage('SonarQube Analysis') {
+                    steps {
+                        withSonarQubeEnv("${SONARQUBE_SERVER}") {
+                            sh """
+                            ${SCANNER_HOME}/bin/sonar-scanner \
+                            -Dsonar.projectKey=simple-apps \
+                            -Dsonar.token=$SONAR_AUTH_TOKEN \
+                            -Dsonar.host.url=$SONAR_HOST_URL
+                            """
+                        }
                     }
                 }
-            },
-            'Lint Helm Chart': {
-                steps {
-                    container('helm') {
-                        dir("${HELM_CHART_DIR}") {
-                            sh 'helm lint .'
+
+                stage('Lint Helm Chart') {
+                    steps {
+                        container('helm') {
+                            dir("${HELM_CHART_DIR}") {
+                                sh 'helm lint .'
+                            }
                         }
                     }
                 }
             }
-        }
         }
 
         stage('Quality Gate') {
