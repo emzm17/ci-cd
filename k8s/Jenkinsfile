@@ -65,7 +65,6 @@ pipeline {
                     script {
                         sh "helm ls --kube-context kind-kind-multinode --kube-insecure-skip-tls-verify"
 
-"
                         def baseDir = params.MICROSERVICES_DIR
                         def namespace = params.NAMESPACE
                         def chartName = params.CHART_NAME
