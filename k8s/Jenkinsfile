@@ -100,7 +100,7 @@ pipeline {
                                         --namespace ${namespace} \
                                         --atomic --timeout 10m \
                                         --kube-context ${KUBE_CONTEXT} \
-                                        --insecure-skip-tls-verify
+                                        --kube-insecure-skip-tls-verify
                                         
                                 """
                             } else {
