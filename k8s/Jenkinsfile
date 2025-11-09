@@ -60,10 +60,15 @@ pipeline {
                             string (
                                 credentialsId: 'helm-repo',
                                 variable: 'HELM_REPO'
+                            ),
+                            usernamePassword(
+                            credentialsId: 'nexus-credentials',
+                            usernameVariable: 'NEXUS_USER',
+                            passwordVariable: 'NEXUS_PASS'
                             )
                         ]){
                     script {
-                        sh "helm ls --kube-context kind-kind-multinode --kube-insecure-skip-tls-verify"
+                       
 
                         def baseDir = params.MICROSERVICES_DIR
                         def namespace = params.NAMESPACE
