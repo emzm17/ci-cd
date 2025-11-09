@@ -76,7 +76,8 @@ pipeline {
                             // echo "🚀 Deploying microservice: ${svc}"
 
                             // def svcPath = "${baseDir}/${svc}"
-                            def valuesFile = "${svcPath}/app.yaml"
+                            def folder = "simple-app"
+                            def valuesFile = "${baseDir}/${folder}/app.yaml"
                             // def cmFile = "${svcPath}/configmap.yaml"
                             // def secretFile = "${svcPath}/secret.yaml"
 
