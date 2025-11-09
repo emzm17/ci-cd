@@ -102,7 +102,7 @@ pipeline {
                                         helm repo add ${CHART_NAME} http://${NEXUS_URL}/repository/${HELM_REPO}/ \
                                         --username ${NEXUS_USER} --password ${NEXUS_PASS}
                                         helm repo update
-                                        helm upgrade --install ${chartName} {HELM_REPO}/${chartName} \
+                                        helm upgrade --install ${chartName} ${HELM_REPO}/${chartName} \
                                         --version ${chartVersion} \
                                         -f ${valuesFile} \
                                         --namespace ${namespace} \
