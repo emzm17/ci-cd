@@ -94,7 +94,7 @@ pipeline {
                             // // Deploy using Helm from Nexus
                             // if (fileExists(valuesFile)) {
                             sh """
-                                        helm upgrade --install ${chartName} ${HELM_REPO}/${chartName} \
+                                        helm upgrade --install ${chartName} http://${NEXUS_URL}/repository/${HELM_REPO}/${chartName} \
                                         --version ${chartVersion} \
                                         -f ${valuesFile} \
                                         --namespace ${namespace} \
