@@ -95,6 +95,7 @@ pipeline {
                             // if (fileExists(valuesFile)) {
                             sh """
                                         helm upgrade --install ${chartName} http://${NEXUS_URL}/repository/${HELM_REPO}/${chartName} \
+                                        --username ${NEXUS_USER} --password ${NEXUS_PASS} \
                                         --version ${chartVersion} \
                                         -f ${valuesFile} \
                                         --namespace ${namespace} \
