@@ -73,12 +73,12 @@ pipeline {
                         def services = sh(script: "ls -1 ${baseDir}", returnStdout: true).trim().split("\n")
 
                         // for (svc in services) {
-                            echo "🚀 Deploying microservice: ${svc}"
+                            // echo "🚀 Deploying microservice: ${svc}"
 
-                            def svcPath = "${baseDir}/${svc}"
+                            // def svcPath = "${baseDir}/${svc}"
                             def valuesFile = "${svcPath}/app.yaml"
-                            def cmFile = "${svcPath}/configmap.yaml"
-                            def secretFile = "${svcPath}/secret.yaml"
+                            // def cmFile = "${svcPath}/configmap.yaml"
+                            // def secretFile = "${svcPath}/secret.yaml"
 
                             // Apply ConfigMap if present
                             // if (fileExists(cmFile)) {
@@ -92,7 +92,7 @@ pipeline {
 
                             // // Deploy using Helm from Nexus
                             // if (fileExists(valuesFile)) {
-                               sh """
+                            sh """
                                         echo "Hello world"
                                         echo "Deploying ${svc} with chart ${chartName}-${chartVersion}..."
                                         helm upgrade --install ${chartName} ${HELM_REPO}/${chartName} \
@@ -102,7 +102,7 @@ pipeline {
                                         --atomic --timeout 10m \
                                         --kube-context kind-kind-multinode \
                                         --kube-insecure-skip-tls-verify
-                                        """
+                            """
                             // } else {
                             //     echo "⚠️ Skipping ${svc}: No values.yaml found."
                             // }
