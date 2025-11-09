@@ -91,18 +91,16 @@ pipeline {
 
                             // Deploy using Helm from Nexus
                             if (fileExists(valuesFile)) {
-                                sh """
-                                    
-                                    echo "Deploying ${svc} with chart ${chartName}-${chartVersion}..."
-                                    helm upgrade --install ${chartName} ${HELM_REPO}/${chartName} \
+                               sh """
+                                        echo "Deploying ${svc} with chart ${chartName}-${chartVersion}..."
+                                        helm upgrade --install ${chartName} ${HELM_REPO}/${chartName} \
                                         --version ${chartVersion} \
                                         -f ${valuesFile} \
                                         --namespace ${namespace} \
                                         --atomic --timeout 10m \
-                                        --kube-context ${KUBE_CONTEXT} \
+                                        --kube-context kind-kind-multinode \
                                         --kube-insecure-skip-tls-verify
-                                        
-                                """
+                                        """
                             } else {
                                 echo "⚠️ Skipping ${svc}: No values.yaml found."
                             }
