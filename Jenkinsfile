@@ -40,6 +40,7 @@ pipeline {
             }
         }
         stage('SonarQube Analysis') {
+            parallel{
             steps {
                 withSonarQubeEnv("${SONARQUBE_SERVER}") {
                     sh """
@@ -50,6 +51,18 @@ pipeline {
                     """
                 }
             }
+            stage('Lint Helm Chart') {
+            steps {
+                container('helm') {
+                    dir("${HELM_CHART_DIR}") {
+                        sh 'helm lint .'
+                    }
+                }
+            }
+        }
+        }
+        }
+        
         }
         stage('Quality Gate') {
             steps {
@@ -76,16 +89,6 @@ pipeline {
                             sed -i 's|^  repository:.*|  repository: ${REGISTRY}/${IMAGE_NAME}|' ${HELM_CHART_DIR}/values.yaml
                             sed -i 's|^  tag:.*|  tag: "${IMAGE_TAG}"|' ${HELM_CHART_DIR}/values.yaml
                         """
-                    }
-                }
-            }
-        }
-        
-        stage('Lint Helm Chart') {
-            steps {
-                container('helm') {
-                    dir("${HELM_CHART_DIR}") {
-                        sh 'helm lint .'
                     }
                 }
             }
