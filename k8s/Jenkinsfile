@@ -63,6 +63,7 @@ pipeline {
                             )
                         ]){
                     script {
+                        sh "kubectl get pods -A"
                         def baseDir = params.MICROSERVICES_DIR
                         def namespace = params.NAMESPACE
                         def chartName = params.CHART_NAME
