@@ -94,8 +94,6 @@ pipeline {
                             // // Deploy using Helm from Nexus
                             // if (fileExists(valuesFile)) {
                             sh """
-                                        echo "Hello world"
-                                        echo "Deploying ${svc} with chart ${chartName}-${chartVersion}..."
                                         helm upgrade --install ${chartName} ${HELM_REPO}/${chartName} \
                                         --version ${chartVersion} \
                                         -f ${valuesFile} \
