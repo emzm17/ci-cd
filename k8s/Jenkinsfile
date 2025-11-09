@@ -115,7 +115,7 @@ pipeline {
                             // }
 
                         // }
-                        echo "✅ ${svc} deployed successfully."
+                        // echo "✅ ${svc} deployed successfully."
                     }
                   }
                 }
